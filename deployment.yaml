@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: assign2
+  namespace: anamdari
+  labels:
+    app: assign2
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: assign2
+  template:
+    metadata:
+      labels:
+        app: assign2
+    spec:
+      containers:
+      - name: assign2
+        image: anamdari/assign2
+        ports:
+        - containerPort: 8080
+        env:
+        - name: env_value
+          value: environmentSnake
+        - name: secret_value
+          valueFrom:
+            secretKeyRef:
+                name: assign2-secret
+                key: secret_value
+        envFrom:
+           - configMapRef:
+               name: assign2-config
